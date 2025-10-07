@@ -1,0 +1,221 @@
+# Test Payment Flow - E-Commerce Backend
+
+###############################################
+# VARIABLES GLOBALES
+###############################################
+
+@baseUrl = http://localhost:3000
+
+@adminToken = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIwNGY0MDc5MC00MThkLTRmZDQtODI2YS05NGFlZDcyYTAxNTUiLCJlbWFpbCI6ImFkbWluQHRlc3QuY29tIiwicm9sZSI6IkFETUlOIiwiaWF0IjoxNzU5ODA4Mjk4LCJleHAiOjE3NTk4OTQ2OTh9.lzehJXQ2Jz49EWknw6UCX4HHegM-ifYpSa269tWrsLo
+@customerToken = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJhMjVkYTkzMy1mNGIzLTRiZTktOWE0YS1hMWFmMmY1NjU1YWQiLCJlbWFpbCI6ImNsaWVudGVAdGVzdC5jb20iLCJyb2xlIjoiQ1VTVE9NRVIiLCJpYXQiOjE3NTk4MDg0NzEsImV4cCI6MTc1OTg5NDg3MX0.cAzH6lN-gZIVePzimjxqLktDz62Ga6CyZoQhEXBgAvU
+@categoryId = 9b131edc-0ba2-44b2-a7a6-342113a969ad
+@productId1 = 0fba6b4b-ef19-413f-9626-f5f5597e8a08
+@productId2 = 6cec1541-787d-40a3-9528-13b318469421
+
+###############################################
+# PASO 1: Crear usuario Admin
+###############################################
+
+### 1.1 Registrar Admin (solo la primera vez)
+# @name register-admin
+POST {{baseUrl}}/auth/register
+Content-Type: application/json
+
+{
+  "email": "admin@test.com",
+  "password": "admin123",
+  "firstName": "Admin",
+  "lastName": "User",
+  "role": "ADMIN"
+}
+
+### 1.2 Login Admin
+# @name login-admin
+POST {{baseUrl}}/auth/login
+Content-Type: application/json
+
+{
+  "email": "admin@test.com",
+  "password": "admin123"
+}
+
+###############################################
+# PASO 2: Crear Categorías y Productos
+###############################################
+
+### 2.1 Crear Categoría
+# @name create-category
+POST {{baseUrl}}/admin/categories
+Authorization: Bearer {{adminToken}}
+Content-Type: application/json
+
+{
+  "name": "Electrónica1",
+  "slug": "electronica1",
+  "description": "Productos electrónicos de última generación",
+  "isActive": true
+}
+
+### 2.2 Crear Producto 1 - iPhone
+# @name create-product-1
+POST {{baseUrl}}/admin/products
+Authorization: Bearer {{adminToken}}
+Content-Type: application/json
+
+{
+  "name": "iPhone 15 Pro",
+  "slug": "iphone-15-pro",
+  "description": "El smartphone más avanzado con chip A17 Pro",
+  "price": 1199.99,
+  "stock": 100,
+  "images": [
+    "https://images.unsplash.com/photo-1592286927505-b0c3c0e77e8f"
+  ],
+  "categoryId": "{{categoryId}}",
+  "isActive": true
+}
+
+### 2.3 Crear Producto 2 - MacBook
+# @name create-product-2
+POST {{baseUrl}}/admin/products
+Authorization: Bearer {{adminToken}}
+Content-Type: application/json
+
+{
+  "name": "MacBook Pro 16",
+  "slug": "macbook-pro-16",
+  "description": "Laptop profesional con M3 Max",
+  "price": 2499.99,
+  "stock": 50,
+  "images": [
+    "https://images.unsplash.com/photo-1517336714731-489689fd1ca8"
+  ],
+  "categoryId": "{{categoryId}}",
+  "isActive": true
+}
+
+### 2.4 Ver todos los productos
+GET {{baseUrl}}/products
+
+###############################################
+# PASO 3: Crear Cliente y hacer compra
+###############################################
+
+### 3.1 Registrar Cliente (solo la primera vez)
+# @name register-customer
+POST {{baseUrl}}/auth/register
+Content-Type: application/json
+
+{
+  "email": "cliente@test.com",
+  "password": "cliente123",
+  "firstName": "Juan",
+  "lastName": "Pérez"
+}
+
+### 3.2 Login Cliente
+# @name login-customer
+POST {{baseUrl}}/auth/login
+Content-Type: application/json
+
+{
+  "email": "cliente@test.com",
+  "password": "cliente123"
+}
+
+###############################################
+# PASO 4: Agregar productos al carrito
+###############################################
+
+### 4.1 Agregar iPhone al carrito (2 unidades)
+# @name add-iphone-to-cart
+POST {{baseUrl}}/cart
+Authorization: Bearer {{customerToken}}
+Content-Type: application/json
+
+{
+  "productId": "{{productId1}}",
+  "quantity": 2
+}
+
+### 4.2 Agregar MacBook al carrito (1 unidad)
+# @name add-macbook-to-cart
+POST {{baseUrl}}/cart
+Authorization: Bearer {{customerToken}}
+Content-Type: application/json
+
+{
+  "productId": "{{productId2}}",
+  "quantity": 1
+}
+
+### 4.3 Ver carrito
+# @name view-cart
+GET {{baseUrl}}/cart
+Authorization: Bearer {{customerToken}}
+
+###############################################
+# PASO 5: CREAR CHECKOUT Y PAGAR
+###############################################
+
+### 5.1 Crear sesión de checkout en Stripe
+# @name create-checkout
+POST {{baseUrl}}/checkout/create
+Authorization: Bearer {{customerToken}}
+Content-Type: application/json
+
+{
+  "shippingAddress": "Calle Mayor 123, 28001 Madrid, España",
+  "successUrl": "http://localhost:3000/success",
+  "cancelUrl": "http://localhost:3000/cancel"
+}
+
+### IMPORTANTE:
+### Copia la URL del campo "url" en la respuesta
+### Ábrela en tu navegador
+### Usa esta tarjeta de prueba:
+###   Número: 4242 4242 4242 4242
+###   Fecha: 12/34
+###   CVC: 123
+###   ZIP: 12345
+
+###############################################
+# PASO 6: Verificar resultados
+###############################################
+
+### 6.1 Ver órdenes del cliente
+GET {{baseUrl}}/orders
+Authorization: Bearer {{customerToken}}
+
+### 6.2 Ver carrito (debería estar vacío)
+GET {{baseUrl}}/cart
+Authorization: Bearer {{customerToken}}
+
+### 6.3 Ver productos (verificar stock reducido)
+GET {{baseUrl}}/products
+
+### 6.4 Ver todas las órdenes (Admin)
+GET {{baseUrl}}/admin/orders
+Authorization: Bearer {{adminToken}}
+
+###############################################
+# PASO 7: Actualizar estado de orden (Admin)
+###############################################
+
+### 7.1 Actualizar orden a SHIPPED
+PATCH {{baseUrl}}/admin/orders/ORDER_ID_AQUI/status
+Authorization: Bearer {{adminToken}}
+Content-Type: application/json
+
+{
+  "status": "SHIPPED"
+}
+
+### 7.2 Actualizar orden a DELIVERED
+PATCH {{baseUrl}}/admin/orders/ORDER_ID_AQUI/status
+Authorization: Bearer {{adminToken}}
+Content-Type: application/json
+
+{
+  "status": "DELIVERED"
+}
