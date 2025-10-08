@@ -1,17 +1,20 @@
 import { NestFactory } from "@nestjs/core";
 import { ValidationPipe } from "@nestjs/common";
 import { SwaggerModule, DocumentBuilder } from "@nestjs/swagger";
-import helmet from "helmet";
+import { json, raw } from "express";
 import { AppModule } from "./app.module";
 import { AllExceptionsFilter } from "./common/filters/http-exception.filter";
+import helmet from "helmet";
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule, {
-    rawBody: true,
-  });
+  const app = await NestFactory.create(AppModule);
 
   app.use(helmet());
   app.enableCors();
+
+  app.use("/webhooks/stripe", raw({ type: "application/json" }));
+
+  app.use(json());
 
   app.useGlobalFilters(new AllExceptionsFilter());
 

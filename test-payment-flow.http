@@ -7,9 +7,10 @@
 @baseUrl = https://api.saintessence.shop
 
 @adminToken = 
-@customerToken = 
+@customerToken =
+@categoryId= 
 @productId1 = 
-@productId2 = 6cec1541-787d-40a3-9528-13b318469421
+@productId2 = 
 
 ###############################################
 # PASO 1: Crear usuario Admin
@@ -49,12 +50,12 @@ Authorization: Bearer {{adminToken}}
 Content-Type: application/json
 
 {
-  "name": "Electrónica1",
-  "slug": "electronica1",
-  "description": "Productos electrónicos de última generación",
-  "isActive": true
+  "name": "Familias Olfativas Árabes",
+  "slug": "perfumes-arabes-familias",
+  "description": "Categoría de perfumes árabes organizada por familias olfativas como amaderada, oriental, floral y especiada",
+  "isActive": true,
+  "imageUrl": "https://perfumescolombia.com.co/cdn/shop/files/lattafa-badee-al-oud-amethyst-original-edp-100ml-6950781.png?v=1751884171"
 }
-
 ### 2.2 Crear Producto 1 - iPhone
 # @name create-product-1
 POST {{baseUrl}}/admin/products
@@ -62,13 +63,14 @@ Authorization: Bearer {{adminToken}}
 Content-Type: application/json
 
 {
-  "name": "iPhone 15 Pro",
-  "slug": "iphone-15-pro",
-  "description": "El smartphone más avanzado con chip A17 Pro",
-  "price": 1199.99,
+  "name": "Lattafa Amethyst",
+  "slug": "Lattafa Amethyst",
+  "description": "Perfume árabe femenino con notas florales, amaderadas y orientales. Elegante y envolvente, ideal para ocasiones especiales.",
+  "price": 100.99,
   "stock": 100,
   "images": [
-    "https://images.unsplash.com/photo-1592286927505-b0c3c0e77e8f"
+    "https://perfumescolombia.com.co/cdn/shop/files/lattafa-badee-al-oud-amethyst-original-edp-100ml-6950781.png?v=1751884171",
+    "https://attoperfumes.com.co/cdn/shop/files/D3BF9AC6-68E0-4FAA-8AE6-E46EA97ADEA32.jpg?v=1695230241&width=1946"
   ],
   "categoryId": "{{categoryId}}",
   "isActive": true
@@ -81,13 +83,13 @@ Authorization: Bearer {{adminToken}}
 Content-Type: application/json
 
 {
-  "name": "MacBook Pro 16",
-  "slug": "macbook-pro-16",
-  "description": "Laptop profesional con M3 Max",
-  "price": 2499.99,
+  "name": "khamrah lattafa",
+  "slug": "khamrah lattafa",
+  "description": "Khamrah Lattafa es una fragancia árabe unisex que combina la calidez especiada con un fondo dulce y envolvente.",
+  "price": 200,
   "stock": 50,
   "images": [
-    "https://images.unsplash.com/photo-1517336714731-489689fd1ca8"
+    "https://fimgs.net/mdimg/perfume/o.75805.jpg"
   ],
   "categoryId": "{{categoryId}}",
   "isActive": true
@@ -106,7 +108,7 @@ POST {{baseUrl}}/auth/register
 Content-Type: application/json
 
 {
-  "email": "cliente@test.com",
+  "email": "sg1855111@gmail.com",
   "password": "cliente123",
   "firstName": "Juan",
   "lastName": "Pérez"
@@ -118,7 +120,7 @@ POST {{baseUrl}}/auth/login
 Content-Type: application/json
 
 {
-  "email": "cliente@test.com",
+  "email": "sg1855111@gmail.com",
   "password": "cliente123"
 }
 
@@ -134,7 +136,7 @@ Content-Type: application/json
 
 {
   "productId": "{{productId1}}",
-  "quantity": 2
+  "quantity": 4
 }
 
 ### 4.2 Agregar MacBook al carrito (1 unidad)
@@ -164,9 +166,9 @@ Authorization: Bearer {{customerToken}}
 Content-Type: application/json
 
 {
-  "shippingAddress": "Calle Mayor 123, 28001 Madrid, España",
-  "successUrl": "http://localhost:3000/success",
-  "cancelUrl": "http://localhost:3000/cancel"
+  "shippingAddress": "CR 50#123 SUR CALDAS",
+  "successUrl": "https://api.saintessence.shop/success",
+  "cancelUrl": "https://api.saintessence.shop/cancel"
 }
 
 ### IMPORTANTE:
