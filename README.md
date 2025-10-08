@@ -95,7 +95,7 @@ npm run prod
 Una vez que el servidor esté ejecutándose, accede a la documentación interactiva de la API en:
 
 ```
-http://localhost:3000/api
+https://api.saintessence.shop/api
 ```
 
 ## Endpoints de la API
@@ -199,7 +199,7 @@ Estructura similar para `/banners`, `/sections`, `/news` con endpoints públicos
 ### Configuración de Webhook
 Configura el endpoint de webhook de Stripe:
 ```
-https://localhost:3000/webhooks/stripe
+https://api.saintessence.shop/webhooks/stripe
 ```
 
 Eventos escuchados:
