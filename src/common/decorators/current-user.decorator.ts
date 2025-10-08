@@ -9,7 +9,7 @@ import { createParamDecorator, ExecutionContext } from "@nestjs/common";
  * @param {ExecutionContext} context - Contexto de ejecución de NestJS que permite acceder al request HTTP.
  * @returns {JwtPayload} El usuario autenticado contenido en `request.user`.
  */
-export const CurrentUser = createParamDecorator((context: ExecutionContext) => {
+export const CurrentUser = createParamDecorator((_data: unknown, context: ExecutionContext) => {
   const request = context.switchToHttp().getRequest();
   return request.user;
 });

@@ -4,12 +4,11 @@
 # VARIABLES GLOBALES
 ###############################################
 
-@baseUrl = http://localhost:3000
+@baseUrl = https://api.saintessence.shop
 
-@adminToken = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIwNGY0MDc5MC00MThkLTRmZDQtODI2YS05NGFlZDcyYTAxNTUiLCJlbWFpbCI6ImFkbWluQHRlc3QuY29tIiwicm9sZSI6IkFETUlOIiwiaWF0IjoxNzU5ODA4Mjk4LCJleHAiOjE3NTk4OTQ2OTh9.lzehJXQ2Jz49EWknw6UCX4HHegM-ifYpSa269tWrsLo
-@customerToken = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJhMjVkYTkzMy1mNGIzLTRiZTktOWE0YS1hMWFmMmY1NjU1YWQiLCJlbWFpbCI6ImNsaWVudGVAdGVzdC5jb20iLCJyb2xlIjoiQ1VTVE9NRVIiLCJpYXQiOjE3NTk4MDg0NzEsImV4cCI6MTc1OTg5NDg3MX0.cAzH6lN-gZIVePzimjxqLktDz62Ga6CyZoQhEXBgAvU
-@categoryId = 9b131edc-0ba2-44b2-a7a6-342113a969ad
-@productId1 = 0fba6b4b-ef19-413f-9626-f5f5597e8a08
+@adminToken = 
+@customerToken = 
+@productId1 = 
 @productId2 = 6cec1541-787d-40a3-9528-13b318469421
 
 ###############################################
@@ -22,10 +21,10 @@ POST {{baseUrl}}/auth/register
 Content-Type: application/json
 
 {
-  "email": "admin@test.com",
+  "email": "suciosanz@gmail.com",
   "password": "admin123",
-  "firstName": "Admin",
-  "lastName": "User",
+  "firstName": "Santiago",
+  "lastName": "Garcia",
   "role": "ADMIN"
 }
 
@@ -35,7 +34,7 @@ POST {{baseUrl}}/auth/login
 Content-Type: application/json
 
 {
-  "email": "admin@test.com",
+  "email": "suciosanz@gmail.com",
   "password": "admin123"
 }
 
