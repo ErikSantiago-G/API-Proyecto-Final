@@ -46,7 +46,7 @@ export class BannersService {
       where: { id },
     });
 
-    if (!banner) throw new NotFoundException("Banner not found");
+    if (!banner) throw new NotFoundException("Banner no encontrado");
 
     return banner;
   }

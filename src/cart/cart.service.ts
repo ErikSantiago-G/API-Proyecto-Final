@@ -73,7 +73,7 @@ export class CartService {
   async addToCart(userId: string, addToCartDto: AddToCartDto) {
     const product = await this.productsService.findOne(addToCartDto.productId);
 
-    if (product.stock < addToCartDto.quantity) throw new BadRequestException("Insufficient stock");
+    if (product.stock < addToCartDto.quantity) throw new BadRequestException("Existencias insuficientes");
 
     let cart = await this.prisma.cart.findUnique({
       where: { userId },
@@ -97,7 +97,7 @@ export class CartService {
     if (existingItem) {
       const newQuantity = existingItem.quantity + addToCartDto.quantity;
 
-      if (product.stock < newQuantity) throw new BadRequestException("Insufficient stock");
+      if (product.stock < newQuantity) throw new BadRequestException("Existencias insuficientes");
 
       await this.prisma.cartItem.update({
         where: { id: existingItem.id },
@@ -131,7 +131,7 @@ export class CartService {
       where: { userId },
     });
 
-    if (!cart) throw new NotFoundException("Cart not found");
+    if (!cart) throw new NotFoundException("Carrito no encontrado");
 
     const cartItem = await this.prisma.cartItem.findFirst({
       where: {
@@ -143,9 +143,9 @@ export class CartService {
       },
     });
 
-    if (!cartItem) throw new NotFoundException("Cart item not found");
+    if (!cartItem) throw new NotFoundException("Artículo del carrito no encontrado");
 
-    if (cartItem.product.stock < updateCartItemDto.quantity) throw new BadRequestException("Insufficient stock");
+    if (cartItem.product.stock < updateCartItemDto.quantity) throw new BadRequestException("Existencias insuficientes");
 
     await this.prisma.cartItem.update({
       where: { id: itemId },
@@ -168,7 +168,7 @@ export class CartService {
       where: { userId },
     });
 
-    if (!cart) throw new NotFoundException("Cart not found");
+    if (!cart) throw new NotFoundException("Carrito no encontrado");
 
     const cartItem = await this.prisma.cartItem.findFirst({
       where: {
@@ -177,7 +177,7 @@ export class CartService {
       },
     });
 
-    if (!cartItem) throw new NotFoundException("Cart item not found");
+    if (!cartItem) throw new NotFoundException("Artículo del carrito no encontrado");
 
     await this.prisma.cartItem.delete({
       where: { id: itemId },

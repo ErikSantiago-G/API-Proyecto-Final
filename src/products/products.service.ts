@@ -88,7 +88,7 @@ export class ProductsService {
       include: { category: true },
     });
 
-    if (!product) throw new NotFoundException("Product not found");
+    if (!product) throw new NotFoundException("Producto no encontrado");
 
     return product;
   }
@@ -106,7 +106,7 @@ export class ProductsService {
       include: { category: true },
     });
 
-    if (!product) throw new NotFoundException("Product not found");
+    if (!product) throw new NotFoundException("Producto no encontrado");
 
     return product;
   }

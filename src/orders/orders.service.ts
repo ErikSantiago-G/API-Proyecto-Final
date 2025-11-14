@@ -68,9 +68,9 @@ export class OrdersService {
       },
     });
 
-    if (!order) throw new NotFoundException("Order not found");
+    if (!order) throw new NotFoundException("Orden no encontrada");
 
-    if (userId && order.userId !== userId) throw new ForbiddenException("Access denied");
+    if (userId && order.userId !== userId) throw new ForbiddenException("Acceso denegado");
 
     return order;
   }

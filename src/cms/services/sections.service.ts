@@ -46,7 +46,7 @@ export class SectionsService {
       where: { id },
     });
 
-    if (!section) throw new NotFoundException("Section not found");
+    if (!section) throw new NotFoundException("Sección no encontrada");
 
     return section;
   }

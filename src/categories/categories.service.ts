@@ -56,7 +56,7 @@ export class CategoriesService {
       },
     });
 
-    if (!category) throw new NotFoundException("Category not found");
+    if (!category) throw new NotFoundException("Categoría no encontrada");
 
     return category;
   }
@@ -78,7 +78,7 @@ export class CategoriesService {
       },
     });
 
-    if (!category) throw new NotFoundException("Category not found");
+    if (!category) throw new NotFoundException("Categoría no encontrada");
 
     return category;
   }

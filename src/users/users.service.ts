@@ -20,7 +20,7 @@ export class UsersService {
       where: { email: data.email },
     });
 
-    if (existingUser) throw new ConflictException("Email already exists");
+    if (existingUser) throw new ConflictException("El correo electrónico ya existe");
 
     return this.prisma.user.create({ data });
   }
@@ -32,7 +32,11 @@ export class UsersService {
    * @param {string} email - Correo electrónico del usuario a buscar.
    */
   async findByEmail(email: string) {
-    return this.prisma.user.findUnique({ where: { email } });
+    const user = this.prisma.user.findUnique({ where: { email } });
+
+    if (!email) throw new NotFoundException("Usuario no encontrado");
+
+    return user;
   }
 
   /**
@@ -46,7 +50,7 @@ export class UsersService {
   async findById(id: string) {
     const user = await this.prisma.user.findUnique({ where: { id } });
 
-    if (!user) throw new NotFoundException("User not found");
+    if (!user) throw new NotFoundException("Usuario no encontrado");
 
     return user;
   }

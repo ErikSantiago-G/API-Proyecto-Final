@@ -16,7 +16,7 @@ async function bootstrap() {
 
   app.use(json());
 
-  app.useGlobalFilters(new AllExceptionsFilter());
+  // app.useGlobalFilters(new AllExceptionsFilter());
 
   app.useGlobalPipes(
     new ValidationPipe({

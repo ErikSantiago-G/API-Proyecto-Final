@@ -19,6 +19,10 @@ export interface AuthUser {
 }
 
 export interface AuthTokens {
+  email?: string;
+  firstName?: string;
+  lastName?: string;
+  role?: UserRole;
   accessToken: string;
   refreshToken: string;
 }

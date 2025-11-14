@@ -1,10 +1,10 @@
 import { Injectable, UnauthorizedException } from "@nestjs/common";
 import { JwtService } from "@nestjs/jwt";
 import { ConfigService } from "@nestjs/config";
-import * as bcrypt from "bcrypt";
 import { UsersService } from "../users/users.service";
 import { RegisterDto } from "./dto/register.dto";
 import { AuthUser, AuthTokens, JwtPayload } from "./types/auth.types";
+import * as bcrypt from "bcrypt";
 
 @Injectable()
 export class AuthService {
@@ -24,11 +24,11 @@ export class AuthService {
    */
   async validateUser(email: string, password: string): Promise<AuthUser> {
     const user = await this.usersService.findByEmail(email);
-    if (!user) throw new UnauthorizedException("Invalid credentials");
+    if (!user) throw new UnauthorizedException("Credenciales invalidas");
 
     const isPasswordValid = await bcrypt.compare(password, user.password);
 
-    if (!isPasswordValid) throw new UnauthorizedException("Invalid credentials");
+    if (!isPasswordValid) throw new UnauthorizedException("Credenciales invalidas");
 
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const { password: _, ...result } = user;
@@ -74,6 +74,10 @@ export class AuthService {
     await this.usersService.updateRefreshToken(user.id, refreshToken);
 
     return {
+      email: user.email,
+      firstName: user.firstName,
+      lastName: user.lastName,
+      role: user.role,
       accessToken,
       refreshToken,
     };
@@ -89,10 +93,10 @@ export class AuthService {
    */
   async refreshToken(userId: string, refreshToken: string): Promise<AuthTokens> {
     const user = await this.usersService.findById(userId);
-    if (!user || !user.refreshToken) throw new UnauthorizedException("Access denied");
+    if (!user || !user.refreshToken) throw new UnauthorizedException("Acceso denegado");
 
     const refreshTokenMatches = await bcrypt.compare(refreshToken, user.refreshToken);
-    if (!refreshTokenMatches) throw new UnauthorizedException("Access denied");
+    if (!refreshTokenMatches) throw new UnauthorizedException("Acceso denegado");
 
     const payload: JwtPayload = {
       sub: user.id,

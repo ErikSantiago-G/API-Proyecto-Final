@@ -38,10 +38,10 @@ export class CheckoutService {
       },
     });
 
-    if (!cart || cart.items.length === 0) throw new BadRequestException("Cart is empty");
+    if (!cart || cart.items.length === 0) throw new BadRequestException("El carrito está vacío.");
 
     for (const item of cart.items) {
-      if (item.product.stock < item.quantity) throw new BadRequestException(`Insufficient stock for ${item.product.name}`);
+      if (item.product.stock < item.quantity) throw new BadRequestException(`Existencias insuficientes para ${item.product.name}`);
     }
 
     const totalAmount = cart.items.reduce((sum, item) => {
@@ -125,7 +125,7 @@ export class CheckoutService {
     try {
       event = this.stripe.webhooks.constructEvent(rawBody, signature, webhookSecret);
     } catch (err) {
-      throw new BadRequestException(`Webhook signature verification failed: ${err.message}`);
+      throw new BadRequestException(`Falló la verificación de la firma del webhook: ${err.message}`);
     }
 
     switch (event.type) {

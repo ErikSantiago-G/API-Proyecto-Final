@@ -46,7 +46,7 @@ export class NewsService {
       where: { id },
     });
 
-    if (!news) throw new NotFoundException("News not found");
+    if (!news) throw new NotFoundException("Noticia no encontrada");
 
     return news;
   }
@@ -63,7 +63,7 @@ export class NewsService {
       where: { slug },
     });
 
-    if (!news) throw new NotFoundException("News not found");
+    if (!news) throw new NotFoundException("Noticia no encontrada");
 
     return news;
   }
