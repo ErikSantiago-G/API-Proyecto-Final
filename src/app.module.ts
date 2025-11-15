@@ -9,6 +9,7 @@ import { CategoriesModule } from "./categories/categories.module";
 import { CartModule } from "./cart/cart.module";
 import { OrdersModule } from "./orders/orders.module";
 import { CmsModule } from "./cms/cms.module";
+import { AppController } from "./app.controller";
 
 @Module({
   imports: [
@@ -30,5 +31,6 @@ import { CmsModule } from "./cms/cms.module";
     OrdersModule,
     CmsModule,
   ],
+  controllers: [AppController],
 })
 export class AppModule {}
