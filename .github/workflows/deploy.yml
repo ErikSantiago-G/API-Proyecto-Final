@@ -1,0 +1,40 @@
+name: Deploy API to VPS
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+
+    - name: Login to GHCR (GitHub Container Registry)
+      run: |
+        echo "${{ secrets.GHCR_TOKEN }}" | docker login ghcr.io -u ${{ secrets.GHCR_USERNAME }} --password-stdin
+
+    - name: Build Docker image
+      run: |
+        docker build -t ghcr.io/${{ secrets.GHCR_USERNAME }}/API-Proyecto-Final:latest .
+
+    - name: Push image
+      run: |
+        docker push ghcr.io/${{ secrets.GHCR_USERNAME }}/API-Proyecto-Final:latest
+
+    - name: Deploy on VPS
+      uses: appleboy/ssh-action@v1.0.3
+      with:
+        host: ${{ secrets.VPS_HOST }}
+        username: ${{ secrets.VPS_USER }}
+        key: ${{ secrets.VPS_KEY }}
+        script: |
+          cd ..
+          cd /var/www/saint_api
+          docker login ghcr.io -u ${{ secrets.GHCR_USERNAME }} -p ${{ secrets.GHCR_TOKEN }}
+          docker compose pull
+          docker compose up -d --build
+          docker system prune -f
