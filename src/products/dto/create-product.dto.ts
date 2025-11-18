@@ -43,4 +43,9 @@ export class CreateProductDto {
   @ApiProperty({ example: "uuid-of-category" })
   @IsUUID()
   categoryId: string;
+
+  @ApiProperty({ example: false, default: false, required: false })
+  @IsOptional()
+  @IsBoolean()
+  isFeatured?: boolean;
 }

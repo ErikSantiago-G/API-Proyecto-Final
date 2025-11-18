@@ -30,12 +30,13 @@ export class ProductsService {
    * @returns - Lista de productos con meta información (total, página, límite, totalPages).
    */
   async findAll(filterDto: FilterProductDto) {
-    const { page = 1, limit = 10, categoryId, search, minPrice, maxPrice, isActive } = filterDto;
+    const { page = 1, limit = 10, categoryId, search, minPrice, maxPrice, isActive, isFeatured } = filterDto;
 
     const where: Prisma.ProductWhereInput = {
       AND: [
         categoryId && { categoryId },
         isActive !== undefined && { isActive },
+        isFeatured !== undefined && { isFeatured },
         search && {
           OR: [
             { name: { contains: search, mode: "insensitive" } },
