@@ -42,9 +42,14 @@ export class FilterProductDto {
   maxPrice?: number;
 
   @IsOptional()
-  @IsBooleanString()
-  @Transform(({ value }) => value === "true")
+  @IsBoolean()
+  @Transform(({ value }) => {
+    if (value === "true" || value === true) return true;
+    if (value === "false" || value === false) return false;
+    return undefined;
+  })
   isActive?: boolean;
+
 
   @ApiPropertyOptional({ example: true })
   @IsOptional()
