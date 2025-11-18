@@ -43,7 +43,7 @@ export class ProductsController {
     return this.productsService.findBySlug(slug);
   }
 
-  @Get("featured")
+  @Get("list/featured")
   @ApiOperation({ summary: "Get featured products" })
   getFeatured() {
     return this.productsService.findAll({ isFeatured: true, limit: 10 });
