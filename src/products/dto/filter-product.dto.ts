@@ -1,7 +1,6 @@
 import { ApiPropertyOptional } from "@nestjs/swagger";
-import { IsOptional, IsNumber, IsString, IsBoolean, Min } from "class-validator";
-import { Type } from "class-transformer";
-import { BooleanString } from "../helpers/boolean-string";
+import { IsOptional, IsNumber, IsString, IsBoolean, Min, IsBooleanString } from "class-validator";
+import { Transform, Type } from "class-transformer";
 
 export class FilterProductDto {
   @ApiPropertyOptional({ example: 1, default: 1 })
@@ -42,15 +41,14 @@ export class FilterProductDto {
   @Min(0)
   maxPrice?: number;
 
-  @ApiPropertyOptional({ example: true })
   @IsOptional()
-  @Type(() => BooleanString)
-  @IsBoolean()
+  @IsBooleanString()
+  @Transform(({ value }) => value === "true")
   isActive?: boolean;
 
   @ApiPropertyOptional({ example: true })
   @IsOptional()
-  @Type(() => BooleanString)
+  @Type(() => Boolean)
   @IsBoolean()
   isFeatured?: boolean;
 
