@@ -1,9 +1,10 @@
 import { NestFactory } from "@nestjs/core";
-import { ValidationPipe } from "@nestjs/common";
+import { BadRequestException, ValidationPipe } from "@nestjs/common";
 import { SwaggerModule, DocumentBuilder } from "@nestjs/swagger";
 import { json, raw } from "express";
 import { AppModule } from "./app.module";
 import { AllExceptionsFilter } from "./common/filters/http-exception.filter";
+import { validationMessages } from "./auth/helpers/validation-messages";
 import { NestFastifyApplication } from "@nestjs/platform-fastify";
 import helmet from "helmet";
 
@@ -24,7 +25,21 @@ async function bootstrap() {
       whitelist: true,
       forbidNonWhitelisted: true,
       transform: false,
-    }),
+
+      exceptionFactory: (errors) => {
+        const messages = errors.flatMap((err) =>
+          Object.values(err.constraints).map((msg) => {
+            return validationMessages[msg] ?? msg;
+          })
+        );
+
+        return new BadRequestException({
+          message: messages,
+          error: "Bad Request",
+          statusCode: 400,
+        });
+      },
+    })
   );
 
   const config = new DocumentBuilder()
